@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'user',
+    'product',
+    'order',
 ]
 
 MIDDLEWARE = [
@@ -73,12 +77,28 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# For Sqllite
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# For Postgres
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'e-commerse',
+#         'USER': 'sanket11',
+#         'PASSWORD': 'Sanket@123',
+#         'HOST': 'localhost',  # Set to the hostname or IP address of your PostgreSQL server
+#         'PORT': '5432',       # Set to the port number your PostgreSQL server is listening on
+#     }
+# }
+
 
 
 # Password validation
