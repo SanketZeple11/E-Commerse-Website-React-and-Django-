@@ -8,8 +8,10 @@ const Register = () => {
     username: "",
     password: "",
     confirm_password: "",
-    email: ""
+    email: "",
   });
+
+  const [formError, setFormErrors] = useState({});
 
   const navigate = useNavigate();
 
@@ -19,18 +21,48 @@ const Register = () => {
     first_name_ref.current.focus();
   }, []);
 
-  // const handle_change = (e) =>{
-  //   console.log(e.target.value)
-  //   saveRegisterData({
-  //     ...registerData,
-  //     [e.target.name]: e.target.value
-  //   });
-  //   console.log(registerData);
-  // };
+  const validate = (registerData) =>{
+    const errors = {};
+    const usernameRegex = new RegExp("^[a-zA-Z0-9]+$");
+    const passwordRegex = new RegExp("^[a-zA-Z0-9]+$");
+    const emailRegex = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+
+    if(!registerData.first_name){
+      errors.first_name = "FirstName is Required"
+    }
+    if(!registerData.last_name){
+      errors.last_name = "LastName is Required"
+    }
+    if(!registerData.username){
+      errors.username = "UserName is Required"
+    }
+    else if(!usernameRegex.test(registerData.username)){
+      errors.username = "UserName is Invalid"
+    }
+    if(!registerData.password){
+      errors.password = "Password is Required"
+    }
+    else if(!passwordRegex.test(registerData.password)){
+      errors.password = "Password is Invalid"
+    }
+    if(!registerData.confirm_password){
+      errors.confirm_password = "Confirm Password is Required"
+    }
+    else if(registerData.password !== registerData.confirm_password){
+      errors.confirm_password = "Password is not similar"
+    }
+    if(!registerData.email){
+      errors.email = "Email is Required"
+    }
+    else if(!emailRegex.test(registerData.email)){
+      errors.email = "Email is Invalid"
+    }
+    return errors;
+  };
 
   const submitRegisterData = async (e) => {
-    console.log("save data", registerData);
     e.preventDefault();
+    setFormErrors(validate(registerData))
     try {
       const response = await fetch("http://localhost:8000/user/register/", {
         method: "POST",
@@ -46,11 +78,10 @@ const Register = () => {
       const data = await response.json();
       console.log("Data received from the server:", data);
       // navigate.push(`/confirm-otp?username=${registerData.username}`)
-      navigate('/confirm-otp', {
+      navigate("/confirm-otp", {
         state: {
           username: registerData.username,
-        }
-        
+        },
       });
       // history.push('/confirm-otp');
     } catch (error) {
@@ -76,6 +107,7 @@ const Register = () => {
             placeholder="Enter your First Name"
             ref={first_name_ref}
           />
+          <p style={{color: "red" }}>{formError.first_name}</p>
         </div>
         <div className="last_name">
           <label htmlFor="last_name">Last Name:</label>
@@ -91,6 +123,7 @@ const Register = () => {
             placeholder="Enter your Last Name"
           />
         </div>
+        <p style={{color: "red" }}>{formError.last_name}</p>
         <div className="email">
           <label htmlFor="email">Email:</label>
           <input
@@ -105,6 +138,7 @@ const Register = () => {
             placeholder="Enter your Email"
           />
         </div>
+        <p style={{color: "red" }}>{formError.email}</p>
         <div className="username">
           <label htmlFor="username">UserName:</label>
           <input
@@ -119,6 +153,7 @@ const Register = () => {
             placeholder="Enter your UserName"
           />
         </div>
+        <p style={{color: "red" }}>{formError.username}</p>
         <div className="password">
           <label htmlFor="password">Password:</label>
           <input
@@ -133,6 +168,7 @@ const Register = () => {
             placeholder="Enter your Password"
           />
         </div>
+        <p style={{color: "red" }}>{formError.password}</p>
         <div className="confirm_password">
           <label htmlFor="confirm_password">ConfirmPassword:</label>
           <input
@@ -147,9 +183,8 @@ const Register = () => {
             placeholder="Enter your Password Again"
           />
         </div>
-        <button type="submit">
-          Register
-        </button>
+        <p style={{color: "red" }}>{formError.confirm_password}</p>
+        <button type="submit">Register</button>
         <a href="/login">Login</a>
       </form>
     </div>

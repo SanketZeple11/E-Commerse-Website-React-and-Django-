@@ -5,14 +5,36 @@ const Login = () => {
     username: "",
     password: "",
   });
+  const [formError, setFormErr] = useState({});
+  // const [isSubmit, setSubmit] = useState(false);
 
   const loginRef = useRef(false);
   useEffect(() => {
     loginRef.current.focus();
   }, []);
 
+  const validate = (loginData)=>{
+      const errors = {};
+      if(!loginData.username){
+        errors.username = "UserName is required"
+      }
+      if(!loginData.password){
+        errors.password = "Password is required"
+      }
+      return errors;
+  };
+
+  // useEffect(() => {
+  //     if(Object.keys(formError).length === 0 && isSubmit){
+  //       console.log(formError);
+        
+  //     }
+  // }, [formError]);
+
   const submitLoginData = async (e) => {
-    console.log(loginData);
+    e.preventDefault();
+    setFormErr(validate(loginData));
+    // setSubmit(true);
     try {
       const response = await fetch("http://localhost:8000/user/login/", {
         method: "POST",
@@ -39,6 +61,7 @@ const Login = () => {
         <div>
           <label htmlFor="username">UserName:</label>
           <input
+          // required
             placeholder="Enter your UserName:"
             type="text"
             ref={loginRef}
@@ -48,9 +71,11 @@ const Login = () => {
             }}
           />
         </div>
+        <p style={{color: "red" }}>{formError.username}</p>
         <div>
           <label htmlFor="password">Password:</label>
           <input
+          // required
             placeholder="Enter your Password:"
             type="password"
             value={loginData.password}
@@ -59,9 +84,10 @@ const Login = () => {
             }}
           />
         </div>
+        <p style={{color: "red" }}>{formError.password}</p>
         <button type="submit">Login</button>
         <a href="/register">Register here</a>
-        <a href="/forget-password">Forget Password</a>
+        <a href="/username-fp">Forget Password</a>
       </form>
     </div>
   );

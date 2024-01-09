@@ -1,4 +1,4 @@
-#!/home/sanketzeple/Desktop/vs-code/E-Commerse/venv/bin/python
+#!/home/sanketzeple/Desktop/vs-code/E-Commerse/backend/venv/bin/python
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

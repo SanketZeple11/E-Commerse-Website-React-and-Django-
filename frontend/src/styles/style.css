@@ -78,3 +78,12 @@ h3 {
   margin-right: 10px;
   margin-right: 10px;
 }
+
+#usernameDiv{
+  background-color: rgb(152, 208, 218);
+  padding: 40px; /* Adjust padding as needed */
+  border: 1px solid black;
+  border-radius: 4px;
+  width: 50%; /* Adjust width as needed */
+  margin: 0 auto; /* Center the form */
+}

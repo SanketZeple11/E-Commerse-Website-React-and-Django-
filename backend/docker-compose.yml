@@ -1,29 +1,41 @@
-version: '3.2'
+version: '3.8'
 
 services:
   django_application:
+    restart: always
+    container_name: django_app
     build: 
       context: .
       dockerfile: Dockerfile
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - POSTGRES_NAME=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "8000:8000"
     volumes:
       - .:/app
     networks:
       - app-network
+    env_file:
+      - .env
     depends_on:
       - db
 
   db:
+    restart: always
+    container_name: postgres_db
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_NAME=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - app-network
 
 networks:
   app-network:
-    external:
-      name: django_app_network
+    driver: bridge

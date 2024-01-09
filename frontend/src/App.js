@@ -6,6 +6,7 @@ import Login from "./compoents/Login/Login";
 import Otp from "./compoents/Otp/Otp";
 import Index from "./compoents/Index";
 import ForgetPassword from "./compoents/ForgetPassword/ForgetPassword";
+import UserNameFP from "./compoents/UserNameFP/UserNameFP";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/register" Component={Register}></Route>
           <Route path="/confirm-otp" Component={Otp}></Route>
           <Route path="/forget-password" Component={ForgetPassword}></Route>
+          <Route path="/username-fp" Component={UserNameFP}></Route>
         </Routes>
       </div>
     </Router>

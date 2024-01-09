@@ -1,14 +1,20 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const ForgetPassword = () => {
+  const location = useLocation();
+
+  let userName = location.state.username;
+
   const [passwordData, setPasswordData] = useState({
     new_password: "",
     re_new_password: "",
+    username: "",
+    is_reset_password: true,
   });
 
   const reset_password = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch(
         "http://localhost:8000/user/forget-password/",
@@ -43,7 +49,8 @@ const ForgetPassword = () => {
             placeholder="Enter your Password"
             onChange={(e) =>
               setPasswordData({
-                password: e.target.value,
+                ...passwordData,
+                new_password: e.target.value,
               })
             }
           />
@@ -56,7 +63,9 @@ const ForgetPassword = () => {
             placeholder="Enter your Password"
             onChange={(e) =>
               setPasswordData({
-                confirm_password: e.target.value,
+                ...passwordData,
+                re_new_password: e.target.value,
+                username: userName,
               })
             }
           />

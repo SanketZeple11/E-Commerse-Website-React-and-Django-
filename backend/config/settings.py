@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 # from rest_framework.permissions import AllowAny
 
@@ -26,9 +27,6 @@ SECRET_KEY = 'django-insecure-%%h^auz8(@^u*7%e0uq%$i=u08)^tqry031)1+#n*vy1&!n+&r
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -83,25 +81,25 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # For Sqllite
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # For Postgres
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'e-commerse',
-#         'USER': 'sanket11',
-#         'PASSWORD': 'Sanket@123',
-#         'HOST': 'localhost',  # Set to the hostname or IP address of your PostgreSQL server
-#         'PORT': '5432',       # Set to the port number your PostgreSQL server is listening on
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("POSTGRES_DATABASE"),
+        'USER': os.environ.get("POSTGRES_USER"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+        'HOST': os.environ.get("POSTGRES_HOST", "db"),# Set to the hostname or IP address of your PostgreSQL server
+        'PORT': os.environ.get("POSTGRES_PORT"),      # Set to the port number your PostgreSQL server is listening on
+    }
+}
 
 
 
@@ -175,3 +173,5 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379"
 # ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+ALLOWED_HOSTS = []
